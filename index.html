@@ -7,13 +7,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/b75910923e.js"
+      crossorigin="anonymous"
+    ></script>
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
       rel="stylesheet"
     />
     <title>Hot'sBog</title>
   </head>
-  <body>
+  <body onload="writeDescription()">
     <script src="./scripts/script.js"></script>
     <div style="width: 20%; height: 5%"></div>
     <div class="content">
@@ -33,12 +37,32 @@
         <div class="child">
           <div class="content">
             <div class="child">
-              <img src="./static/HotsBog_icon.png" class="icon" alt="HotsBog Icon" />
+              <img
+                src="./static/HotsBog_icon.png"
+                class="icon"
+                alt="HotsBog Icon"
+              />
             </div>
-            <div class="child padd">
-              <div id="hotsbog">Hot'sBog</div>
-              <div class="subtitle">
+            <div class="child extra-padding">
+              <div id="hotsbog" class="hotsbog">Hot'sBog</div>
+              <div id="subtitle">
                 <!-- Una alternativa para combatir la inseguridad en Bogotá -->
+              </div>
+              <div id="social-media" class="icon-container">
+                <div class="box"></div>
+                <div class="box">
+                  <a
+                    href="https://linkedin.com/in/samuel-jacobo-garavito-segura"
+                  >
+                    <i class="fa-brands fa-linkedin"></i>
+                  </a>
+                </div>
+                <div class="box">
+                  <a href="https://github.com/SgaravitoWp">
+                    <i class="fa-brands fa-github"></i>
+                  </a>
+                </div>
+                <div class="box"></div>
               </div>
               <div id="about" class="about">
                 Hot'sBog es un aplicativo web que permite a los usuarios
