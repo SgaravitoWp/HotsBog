@@ -35,3 +35,18 @@ function writeDescription() {
 
   typeWriter();
 }
+function writeName() {
+  var i = 0;
+  var txt = "by: Samuel Garavito";
+  var speed = 120;
+
+  function typeWriter() {
+    if (i < txt.length) {
+      document.getElementById("author").innerHTML += txt.charAt(i);
+      i++;
+      setTimeout(typeWriter, speed);
+    }
+  }
+
+  typeWriter();
+}
