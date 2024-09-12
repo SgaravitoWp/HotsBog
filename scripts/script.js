@@ -46,7 +46,23 @@ function writeName() {
       i++;
       setTimeout(typeWriter, speed);
     }
+    
   }
 
+  typeWriter();
+}
+function writeCode(code) {
+  var i = 0;
+  var txt = code;
+  var speed = 1500;
+
+  function typeWriter() {
+    if (i < txt.length) {
+      document.getElementById("code").innerHTML += txt.charAt(i);
+      i++;
+      setTimeout(typeWriter, speed);
+    }
+    
+  }
   typeWriter();
 }
