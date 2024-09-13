@@ -46,7 +46,6 @@ function writeName() {
       i++;
       setTimeout(typeWriter, speed);
     }
-    
   }
 
   typeWriter();
@@ -62,7 +61,6 @@ function writeCode(code) {
       i++;
       setTimeout(typeWriter, speed);
     }
-    
   }
   typeWriter();
 }

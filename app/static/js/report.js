@@ -1,32 +1,43 @@
-document.addEventListener("DOMContentLoaded", function () {
+var lat = "";
+var lng = "";
+var isPositionFilled = false;
+
+function checkAllConditions() {
   const submitButton = document.getElementById("submitAll");
   const dateInput = document.getElementById("date-input");
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-  function validateForm() {
-    const isDateFilled = dateInput.value.trim() !== "";
-    const isAnyCheckboxChecked = Array.from(checkboxes).some(
-      (checkbox) => checkbox.checked
-    );
-
-    submitButton.disabled = !(isDateFilled && isAnyCheckboxChecked);
-
-    submitButton.style.opacity = submitButton.disabled ? "0.5" : "1";
-  }
-
-  // Añadir event listeners
-  dateInput.addEventListener("input", validateForm);
-  checkboxes.forEach((checkbox) =>
-    checkbox.addEventListener("change", validateForm)
+  const isDateFilled = dateInput.value.trim() !== "";
+  const isAnyCheckboxChecked = Array.from(checkboxes).some(
+    (checkbox) => checkbox.checked
   );
 
-  // Validar formulario inicialmente
-  validateForm();
+  console.log(!(isDateFilled && isAnyCheckboxChecked && isPositionFilled));
+  submitButton.disabled = !(
+    isDateFilled &&
+    isAnyCheckboxChecked &&
+    isPositionFilled
+  );
+
+  submitButton.style.opacity = submitButton.disabled ? "0.5" : "1";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const dateInput = document.getElementById("date-input");
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+  dateInput.addEventListener("input", checkAllConditions);
+  checkboxes.forEach((checkbox) =>
+    checkbox.addEventListener("change", checkAllConditions)
+  );
+
+  checkAllConditions();
   document
     .getElementById("submitAll")
     .addEventListener("click", function (event) {
       console.log("Botón clickeado");
-      event.preventDefault(); // Prevenir el comportamiento por defecto del botón
+      event.preventDefault(); 
 
       let date_input = document.getElementById("date-input").value;
 
@@ -38,13 +49,13 @@ document.addEventListener("DOMContentLoaded", function () {
         (checkbox) => checkbox.value
       );
 
-      // Convertir los datos de FormData a un objeto JSON
       let combinedData = {
         date_input: date_input,
         selected_values: selectedValues,
+        latitude: lat,
+        longitude: lng,
       };
 
-      // Enviar los datos combinados como JSON
       fetch("/report-data", {
         method: "POST",
         headers: {
@@ -56,12 +67,63 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           if (data.status === "success") {
             window.location.href = "/home";
+            alert("Su reporte fue realizado con exito. ");
           } else {
             console.error("Error:", data.message);
           }
         })
         .catch((error) => {
+          alert("Intente de nuevo. Ocurrio un error. ");
           console.error("Error en el envío:", error);
         });
     });
 });
+
+function initMap() {
+  const initialPosition = { lat: 4.6533816, lng: -74.0836333 };
+
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 15,
+    center: initialPosition,
+    restriction: {
+      latLngBounds: {
+        north: 4.8058844996972425,
+        south: 4.466733218364823,
+        west: -74.25434937395299,
+        east: -73.95910942266366,
+      },
+      strictBounds: true,
+    },
+  });
+
+  let marker = null;
+
+  function updateCoordinates(position) {
+    lat = position.lat();
+    lng = position.lng();
+    isPositionFilled = true;
+    checkAllConditions();
+    console.log(`Latitud: ${lat}, Longitud: ${lng}`);
+  }
+
+  map.addListener("click", function (event) {
+    const clickedLocation = event.latLng;
+
+    if (marker) {
+      marker.setPosition(clickedLocation);
+    } else {
+      marker = new google.maps.Marker({
+        position: clickedLocation,
+        map: map,
+      });
+      lat = clickedLocation.lat();
+      lng = clickedLocation.lng();
+    }
+
+    marker.addListener("drag", function () {
+      updateCoordinates(this.getPosition());
+    });
+
+    updateCoordinates(clickedLocation);
+  });
+}

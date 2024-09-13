@@ -13,7 +13,7 @@
       type="text/css"
       href="{{ url_for('static', filename='css/report.css') }}"
     />
-    <title>Hot'sBog Report</title>
+    <title>Hot'sBog Map</title>
     <script
       src="https://kit.fontawesome.com/b75910923e.js"
       crossorigin="anonymous"
@@ -24,9 +24,9 @@
     />
   </head>
   <body>
-    <script src="{{ url_for('static', filename='js/report.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/show-reports.js') }}"></script>
     <a href="{{ url_for('home') }}">
-      <div class="btn-absolute">
+      <div class="btn-absolute-map">
         <img
           class="icon"
           src="{{ url_for('static', filename='images/HotsBog_icon.png') }}"
@@ -35,20 +35,20 @@
         Volver
       </div>
     </a>
-    <div class="left-side">
-      <div class="left-side1">
+    <div class="left-side-map">
+      <div id="map"></div>
+    </div>
+    <div class="rigth-side-map">
+      <div class="right-side1">
         <div class="hotsbog">
-          Hot'sBog |
-          <span> Reportes </span>
+          <span> Mapa </span>
+          | Hot'sBog
         </div>
         <div class="about">
-          Bienvenido a la sección de Reportes de Hot'sBog. <br />
-          Por favor, complete los siguientes pasos: <br />
-          <ol>
-            <li>Ingrese la fecha en la que ocurrio el incidente.</li>
-            <li>Seleccione el tipo de hurto que ocurrio en el incidente.</li>
-            <li>Seleccione el lugar donde ocurrió el incidente.</li>
-          </ol>
+          Bienvenido al mapa de
+          <span> Hot'sBog. </span> <br />
+          A continuación, encontrará el conjunto de reportes generados en
+          función del filtro seleccionado.
         </div>
         <div class="about bottom">
           <div class="column">
@@ -61,7 +61,7 @@
                 <div class="button__line"></div>
                 <div class="button__line"></div>
                 <span class="button__text">
-                  <span class="button__text__report"> Reportar </span>
+                  <span class="button__text__report"> Buscar </span>
                 </span>
                 <div class="button__drow1"></div>
                 <div class="button__drow2"></div>
@@ -180,9 +180,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="right-side">
-      <div id="map"></div>
     </div>
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBB2TdKm4PSj3gX5Ol_eu0UkhRCRzz9JuY&callback=initMap"

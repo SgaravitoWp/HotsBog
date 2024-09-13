@@ -2,7 +2,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from .configs import config
 from flask import Flask
-
 import os
 
 db = SQLAlchemy()
@@ -15,7 +14,6 @@ app = Flask(__name__,
 
 app.config.from_object(config.Config)
 app.secret_key = app.config["GOOGLE_CLIENT_SECRET"]
-
 
 def create_app():
 

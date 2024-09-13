@@ -1,6 +1,6 @@
 from flask import session, abort, redirect, jsonify, request, render_template
-from google_auth_oauthlib.flow import Flow
 from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 from google.oauth2 import id_token
 from functools import wraps
@@ -87,8 +87,8 @@ def report_data():
     report_record["email"] = session["email"]
     report_record["date"] = data["date_input"]
     report_record["thefts"] = ",".join(data["selected_values"])
-    report_record["latitude"] = 3
-    report_record["longitude"] = 4
+    report_record["latitude"] = data["latitude"]
+    report_record["longitude"] = data["longitude"]
 
     try:
         Theft.create(**report_record)
@@ -97,6 +97,24 @@ def report_data():
         return jsonify({"status": "error"})
     else:
         return jsonify({"status": "success"})
+
+@app.route("/load-reports", methods=['GET'])
+@check_auth
+def load_reports():
+    reports = Theft.query.all()
+    reports = [{
+        "lat" : report.latitude,
+        "lng" : report.longitude,
+        "name" : report.name,
+    }
+    for report in reports
+    ]
+    return jsonify(reports)
+
+@app.route('/map')
+@check_auth
+def map():
+    return render_template('map.html') 
 
 @app.errorhandler(404)
 def page_not_found(e):
