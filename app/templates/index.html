@@ -33,7 +33,7 @@
         <a id="home" onclick="muestra_oculta('home')">Home</a>
         <a id="more" onclick="muestra_oculta('more')">Acerca de</a>
         <div style="width: 10%"></div>
-        <a id="auth" href="/login">
+        <a id="auth" href="{{ url_for('login') }}">
           <i class="fa-brands fa-google"></i>
           <span class="log-in">
             Log-in

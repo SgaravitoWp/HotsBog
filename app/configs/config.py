@@ -10,3 +10,6 @@ class Config:
     GOOGLE_CLIENT_ID = google_auth_data.get("web").get("client_id")
     GOOGLE_CLIENT_SECRET = google_auth_data.get("web").get("client_secret")
     REDIRECT_URI = google_auth_data.get("web").get("redirect_uris")[0]
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(os.path.dirname(os.path.dirname(__file__)), 
+                                                          'instances', 'Thefts.db')
+    

@@ -32,10 +32,10 @@
       <div class="navbar">
         <a id="home" onclick="muestra_oculta('home')">Home</a>
         <a href="#">Mapa</a>
-        <a href="/report">Reportar</a>
+        <a href="{{ url_for('report') }}">Reportar</a>
         <a id="more" onclick="muestra_oculta('more')">Acerca de</a>
         <div style="width: 10%"></div>
-        <a href="/logout" id="auth-image">
+        <a href="{{ url_for('logout') }}" id="auth-image">
           <img class="profile-img" src="{{ picture_link }}" alt="" />
           <span class="log-out">
             Log-out

@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     submitButton.disabled = !(isDateFilled && isAnyCheckboxChecked);
 
-    submitButton.style.opacity = submitButton.disabled ? '0.5' : '1';
+    submitButton.style.opacity = submitButton.disabled ? "0.5" : "1";
   }
 
   // Añadir event listeners
@@ -38,11 +38,6 @@ document.addEventListener("DOMContentLoaded", function () {
         (checkbox) => checkbox.value
       );
 
-      // let electronic_input = document.getElementById("electronic-input").value;
-      // let money_input = document.getElementById("money-input").value;
-      // let vehicle_input = document.getElementById("vehicle-input").value;
-      // let others_input = document.getElementById("others-input").value;
-
       // Convertir los datos de FormData a un objeto JSON
       let combinedData = {
         date_input: date_input,
@@ -59,11 +54,11 @@ document.addEventListener("DOMContentLoaded", function () {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.status === 'success') {
+          if (data.status === "success") {
             window.location.href = "/home";
-        } else {
-            console.error('Error:', data.message);
-        }
+          } else {
+            console.error("Error:", data.message);
+          }
         })
         .catch((error) => {
           console.error("Error en el envío:", error);
