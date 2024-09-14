@@ -1,0 +1,9 @@
+# Ignorar archivos y directorios de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar archivos de configuración del editor
+*.idea/
+*.vscode/
