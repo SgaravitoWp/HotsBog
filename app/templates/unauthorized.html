@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="icon"
-      href="{{ url_for('static', filename='images/HostBog_favicon.png') }}"
+      href="{{ url_for('static', filename='images/hotsbog-favicon.png') }}"
       type="image/png"
     />
     <link
       rel="stylesheet"
       type="text/css"
-      href="{{ url_for('static', filename='css/unauthorized.css') }}"
+      href="{{ url_for('static', filename='css/client-error-styles.css') }}"
     />
 
     <link
@@ -22,12 +22,12 @@
     <title>Page Unauthorized</title>
   </head>
   <body onload="writeCode('401')">
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
     <div class="container">
       <div class="row">
         <div class="box">
           <img
-            src="{{ url_for('static', filename='images/HotsBog_icon.png') }}"
+            src="{{ url_for('static', filename='images/hotsbog-icon.png') }}"
             class="icon"
             alt="HotsBog Icon"
           />

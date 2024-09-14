@@ -35,6 +35,7 @@ function writeDescription() {
 
   typeWriter();
 }
+
 function writeName() {
   var i = 0;
   var txt = "by: Samuel Garavito";

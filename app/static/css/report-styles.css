@@ -618,6 +618,13 @@ button {
   align-items: center;
   margin-top: 20%;
 }
+.button-container-search {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
+}
 .button:not(:last-child) {
   margin-bottom: 64px;
 }

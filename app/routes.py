@@ -3,6 +3,7 @@ from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 from google.oauth2 import id_token
+from .filters import filter_data
 from functools import wraps
 from .models import Theft
 from app import app
@@ -45,7 +46,8 @@ def callback():
     id_info = id_token.verify_oauth2_token(
         id_token=credentials.id_token,
         request=token_request,
-        audience=app.config["GOOGLE_CLIENT_ID"]
+        audience=app.config["GOOGLE_CLIENT_ID"],
+        clock_skew_in_seconds=10,
     )
 
     session["google_id"] = id_info.get("sub")
@@ -53,6 +55,7 @@ def callback():
     session["family_name"] = id_info.get("family_name")
     session["email"] = id_info.get("email")
     session["picture_link"] = id_info.get("picture")
+
     return redirect("/home")
 
 @app.route("/logout")
@@ -77,16 +80,17 @@ def home():
 def report():
     return render_template('report.html')
 
-@app.route("/report-data", methods=['POST'])
+@app.route("/report-theft", methods=['POST'])
 @check_auth
-def report_data():
+def report_theft():
+
     data = request.get_json()
     report_record = dict()
     report_record["name"] = session["given_name"]
     report_record["family_name"] = session["family_name"]
     report_record["email"] = session["email"]
-    report_record["date"] = data["date_input"]
-    report_record["thefts"] = ",".join(data["selected_values"])
+    report_record["date"] = data["dateInput"]
+    report_record["thefts"] = ",".join(data["selectedValues"])
     report_record["latitude"] = data["latitude"]
     report_record["longitude"] = data["longitude"]
 
@@ -98,18 +102,22 @@ def report_data():
     else:
         return jsonify({"status": "success"})
 
-@app.route("/load-reports", methods=['GET'])
+@app.route("/load-reports", methods=['POST'])
 @check_auth
 def load_reports():
     reports = Theft.query.all()
     reports = [{
+        "date": report.date,
+        "name" : report.name,
+        "thefts": report.thefts, 
         "lat" : report.latitude,
         "lng" : report.longitude,
-        "name" : report.name,
     }
     for report in reports
     ]
-    return jsonify(reports)
+    filters = request.get_json()
+
+    return jsonify({"data":filter_data(reports,filters), "status": "success"})
 
 @app.route('/map')
 @check_auth

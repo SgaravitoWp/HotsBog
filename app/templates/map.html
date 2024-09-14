@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="icon"
-      href="{{ url_for('static', filename='images/HostBog_favicon.png') }}"
+      href="{{ url_for('static', filename='images/hotsbog-favicon.png') }}"
       type="image/png"
     />
     <link
       rel="stylesheet"
       type="text/css"
-      href="{{ url_for('static', filename='css/report.css') }}"
+      href="{{ url_for('static', filename='css/report-styles.css') }}"
     />
     <title>Hot'sBog Map</title>
     <script
@@ -24,12 +24,12 @@
     />
   </head>
   <body>
-    <script src="{{ url_for('static', filename='js/show-reports.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/map-handler.js') }}"></script>
     <a href="{{ url_for('home') }}">
       <div class="btn-absolute-map">
         <img
           class="icon"
-          src="{{ url_for('static', filename='images/HotsBog_icon.png') }}"
+          src="{{ url_for('static', filename='images/hotsbog-icon.png') }}"
           alt=""
         />
         Volver
@@ -52,11 +52,12 @@
         </div>
         <div class="about bottom">
           <div class="column">
-            <div class="title">Fecha de Hurto</div>
+            <div class="title">Rango de Fechas</div>
             <form class="formulario">
-              <input id="date-input" type="date" class="animated-input" />
+              <input id="startDate" type="date" class="animated-input" />
+              <input id="endDate" type="date" class="animated-input" />
             </form>
-            <div class="button-container">
+            <div class="button-container-search">
               <button id="submitAll" class="button type--A">
                 <div class="button__line"></div>
                 <div class="button__line"></div>

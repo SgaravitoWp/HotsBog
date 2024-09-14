@@ -5,11 +5,11 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{{ url_for('static', filename='css/styles.css') }}"
+      href="{{ url_for('static', filename='css/home-styles.css') }}"
     />
     <link
       rel="icon"
-      href="{{ url_for('static', filename='images/HostBog_favicon.png') }}"
+      href="{{ url_for('static', filename='images/hotsbog-favicon.png') }}"
       type="image/png"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,7 +26,7 @@
     <title>Hot'sBog</title>
   </head>
   <body onload="writeDescription();writeName()">
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
     <div class="box-aux-1"></div>
     <div class="content">
       <div class="navbar">
@@ -50,7 +50,7 @@
         <div class="content">
           <div class="child">
             <img
-              src="{{ url_for('static', filename='images/HotsBog_icon.png') }}"
+              src="{{ url_for('static', filename='images/hotsbog-icon.png') }}"
               class="icon"
               alt="HotsBog Icon"
             />

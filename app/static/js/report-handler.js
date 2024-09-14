@@ -12,7 +12,6 @@ function checkAllConditions() {
     (checkbox) => checkbox.checked
   );
 
-  console.log(!(isDateFilled && isAnyCheckboxChecked && isPositionFilled));
   submitButton.disabled = !(
     isDateFilled &&
     isAnyCheckboxChecked &&
@@ -23,7 +22,6 @@ function checkAllConditions() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-
   const dateInput = document.getElementById("date-input");
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
@@ -36,10 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("submitAll")
     .addEventListener("click", function (event) {
-      console.log("Botón clickeado");
-      event.preventDefault(); 
+      event.preventDefault();
 
-      let date_input = document.getElementById("date-input").value;
+      let dateInput = document.getElementById("date-input").value;
 
       let checkboxes = document.querySelectorAll(
         'input[name="options"]:checked'
@@ -50,13 +47,13 @@ document.addEventListener("DOMContentLoaded", function () {
       );
 
       let combinedData = {
-        date_input: date_input,
-        selected_values: selectedValues,
+        dateInput: dateInput,
+        selectedValues: selectedValues,
         latitude: lat,
         longitude: lng,
       };
 
-      fetch("/report-data", {
+      fetch("/report-theft", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,6 +76,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+function updateCoordinates(position) {
+  lat = position.lat();
+  lng = position.lng();
+  isPositionFilled = true;
+  checkAllConditions();
+}
+
 function initMap() {
   const initialPosition = { lat: 4.6533816, lng: -74.0836333 };
 
@@ -97,14 +101,6 @@ function initMap() {
   });
 
   let marker = null;
-
-  function updateCoordinates(position) {
-    lat = position.lat();
-    lng = position.lng();
-    isPositionFilled = true;
-    checkAllConditions();
-    console.log(`Latitud: ${lat}, Longitud: ${lng}`);
-  }
 
   map.addListener("click", function (event) {
     const clickedLocation = event.latLng;
