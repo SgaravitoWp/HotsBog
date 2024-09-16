@@ -1,13 +1,9 @@
 from datetime import datetime
 import pandas as pd
 import warnings
-import locale
 
 # Ignorar posibles alertas
 warnings.filterwarnings("ignore")
-
-# Establece la configuración regional para fechas en español
-locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 
 def set_common_values(thefts, thefts_filter):
     """
