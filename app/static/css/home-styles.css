@@ -164,7 +164,7 @@ body {
 .icon {
   width: 200px;
   height: auto;
-  animation: entrada-icon 1s ease-in;
+  animation: entrada-icon 4s ease-in-out;
 }
 
 @keyframes entrada-icon {

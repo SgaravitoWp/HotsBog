@@ -31,7 +31,7 @@ app.secret_key = app.config["GOOGLE_CLIENT_SECRET"]
 """
 Establece la clave secreta para la sesión utilizando el valor de `GOOGLE_CLIENT_SECRET` en la configuración.
 """
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
+# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
 """
 Configura la duración de la sesión permanente a 10 minutos.
 """

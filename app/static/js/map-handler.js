@@ -1,6 +1,7 @@
 // Variable para almacenar la instancias correspondientes al mapa de Google Maps.
 let map;
 let markers = [];
+let markerCluster;
 
 /**
  * Verifica las condiciones para habilitar o deshabilitar el botón de envío.
@@ -71,18 +72,15 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((response) => response.json())
         .then((data) => {
           if (data.status === "success") {
-            console.log(data.data)
             if (data.data.length === 0) {
-              alert("No hay reportes de hurto para este rango de fechas.")
+              alert("No hay reportes de hurto para este rango de fechas.");
             }
             loadMarkers(data.data);
           } else {
-            console.error("Error:", data.message);
           }
         })
         .catch((error) => {
           alert("Intente de nuevo. Ocurrió un error.");
-          console.error("Error en el envío:", error);
         });
     });
 });
@@ -94,18 +92,19 @@ function initMap() {
   const initialPosition = { lat: 4.6533816, lng: -74.0836333 };
 
   map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 10,
+    zoom: 5,
     center: initialPosition,
     restriction: {
       latLngBounds: {
-        north: 4.8058844996972425,
-        south: 4.466733218364823,
-        west: -74.25434937395299,
-        east: -73.95910942266366,
+        north: 4.9058844996972425,
+        south: 4.266733218364823,
+        west: -74.65434937395299,
+        east: -73.85910942266366,
       },
       strictBounds: true,
     },
   });
+  markerCluster = new MarkerClusterer(map, markers);
 }
 
 /**
@@ -117,20 +116,21 @@ function clearMarkers() {
 }
 
 /**
- * Carga los marcadores en el mapa basados en los datos proporcionados.
+ * Carga los marcadores y sus clusteres dinámicos en el mapa basados en los datos proporcionados.
  *
  * @param {Array} data - Lista de datos que contienen información para cada marcador (latitud, longitud, fecha, robos).
  */
 function loadMarkers(data) {
   clearMarkers();
-  let image = "/static/images/hotsbog-favicon.png";
+  markerCluster.clearMarkers();
+  let image = "/static/images/hotsbog-marker-icon.png";
   data.forEach((place) => {
     const marker = new google.maps.Marker({
       position: { lat: parseFloat(place.lat), lng: parseFloat(place.lng) },
       map: map,
       icon: {
         url: image,
-        scaledSize: new google.maps.Size(50, 50),
+        scaledSize: new google.maps.Size(60, 60),
       },
       title: place.name,
       optimized: false,
@@ -154,6 +154,10 @@ function loadMarkers(data) {
             ${listThefts}
           </ul>
         </div>
+        <div class="info-items info-horizontal-line"></div>
+        <div class="info-items">
+          <span class="info-span"> ${place.name} </span>
+        </div>
       </div>
     </div>
     `;
@@ -163,11 +167,16 @@ function loadMarkers(data) {
     });
 
     marker.addListener("click", () => {
-      console.log("click punto");
       infoWindow.open({
         anchor: marker,
         map,
       });
     });
+  });
+  markerCluster = new MarkerClusterer(map, markers, {
+    imagePath:
+      "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m",
+    algorithmOptions: { radius: 80 },
+    gridSize: 80,
   });
 }
