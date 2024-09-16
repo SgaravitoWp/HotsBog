@@ -18,6 +18,11 @@
       type="text/css"
       href="{{ url_for('static', filename='css/info-window-styles.css') }}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/absolute-back-button-styles.css') }}"
+    />
     <title>Hot'sBog Map</title>
     <script
       src="https://kit.fontawesome.com/b75910923e.js"
@@ -30,15 +35,15 @@
   </head>
   <body>
     <script src="{{ url_for('static', filename='js/map-handler.js') }}"></script>
-    <a href="{{ url_for('home') }}">
-      <div class="btn-absolute-map">
+    <a href="{{ url_for('home') }}" class="right-fixed-button">
+      <div class="box">
         <img
-          class="icon"
-          src="{{ url_for('static', filename='images/hotsbog-icon.png') }}"
+          class="right-back-icon"
+          src="{{ url_for('static', filename='images/hotsbog-favicon.png') }}"
           alt=""
         />
-        Volver
       </div>
+      <div class="box right-rotate hidden">Home</div>
     </a>
     <div class="left-side-map">
       <div id="map"></div>

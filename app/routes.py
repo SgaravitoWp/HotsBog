@@ -189,7 +189,7 @@ def fetch_reports():
     """
     filters = request.get_json()
     try:
-        reports = Theft.query.all()
+        reports = Theft.query.all() 
         reports = [{
             "date": report.date,
             "thefts": report.thefts.split(","), 
@@ -198,10 +198,14 @@ def fetch_reports():
         }
         for report in reports
         ]
+        if reports: 
+            data = filter_data(reports, filters)
+        else:
+            data = reports
     except:
         return jsonify({"status": "error"}), 500
     else:
-        return jsonify({"data": filter_data(reports, filters), "status": "success"}), 200
+        return jsonify({"data": data , "status": "success"}), 200
 
 @app.route('/map')
 @check_auth
@@ -222,7 +226,7 @@ def page_not_found(e):
     Returns:
         Response: Renderiza la plantilla de página no encontrada.
     """
-    return render_template('not_found.html'), 404
+    return render_template('not-found.html'), 404
 
 @app.errorhandler(401)
 def page_unauthorized(e):

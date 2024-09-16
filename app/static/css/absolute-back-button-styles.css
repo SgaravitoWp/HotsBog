@@ -1,0 +1,101 @@
+
+@keyframes right-side-animation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.right-fixed-button {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 100px;
+  height: 100px;
+  background-color: #f8a833;
+  color: #1a5276;
+  text-decoration: none;
+  font-size: 150%;
+  line-height: 50px;
+  text-align: center;
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  border-radius: 5px 0 0 5px;
+  transition: width 0.3s ease-in-out;
+  animation: right-side-animation 1s ease-in-out;
+}
+.left-fixed-button {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100px;
+  height: 100px;
+  background-color: #f8a833;
+  color: #1a5276;
+  text-decoration: none;
+  font-size: 150%;
+  line-height: 50px;
+  text-align: center;
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  border-radius: 0 5px 5px 0;
+  transition: width 0.3s ease-in-out;
+  animation: right-side-animation 1s ease-in-out;
+}
+
+.right-fixed-button:hover {
+  width: 150px;
+}
+.left-fixed-button:hover {
+  width: 150px;
+}
+
+.left-back-icon {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  right: 0;
+}
+
+.right-back-icon {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 0;
+}
+
+.right-rotate {
+  transform: rotate(270deg);
+  padding-top: 10%;
+}
+.left-rotate {
+  transform: rotate(90deg);
+  padding-top: 10%;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  align-items: center;
+  margin: 10px 0px 10px 0;
+}
+
+.hidden {
+  opacity: 0; 
+  visibility: hidden; 
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.left-fixed-button:hover .hidden {
+  opacity: 1;
+  visibility: visible; 
+}
+.right-fixed-button:hover .hidden {
+  opacity: 1;
+  visibility: visible; 
+}

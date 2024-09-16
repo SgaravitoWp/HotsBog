@@ -11,24 +11,6 @@ a {
   text-decoration: none;
 }
 
-.btn-absolute {
-  position: absolute;
-  font-size: 1.5rem;
-  height: 10%;
-  left: -50px;
-  width: 10%;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: #003b5c;
-  padding: 10px 20px;
-  color: white;
-  border: none;
-  transition: 0.2s ease-in-out;
-  border-radius: 4px;
-  cursor: pointer;
-  text-align: right;
-  animation: btn-absolute-amimation 1s ease-in;
-}
 
 .btn-absolute-map {
   position: absolute;

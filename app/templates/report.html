@@ -13,6 +13,11 @@
       type="text/css"
       href="{{ url_for('static', filename='css/report-styles.css') }}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/absolute-back-button-styles.css') }}"
+    />
     <title>Hot'sBog Report</title>
     <script
       src="https://kit.fontawesome.com/b75910923e.js"
@@ -25,14 +30,10 @@
   </head>
   <body>
     <script src="{{ url_for('static', filename='js/report-handler.js') }}"></script>
-    <a href="{{ url_for('home') }}">
-      <div class="btn-absolute">
-        <img
-          class="icon"
-          src="{{ url_for('static', filename='images/hotsbog-icon.png') }}"
-          alt=""
-        />
-        Volver
+    <a href="{{ url_for('home') }}" class="left-fixed-button">
+      <div class="box left-rotate hidden">Home</div>
+      <div class="box">
+        <img class="left-back-icon" src="{{ url_for('static', filename='images/hotsbog-favicon.png') }}" alt="" />
       </div>
     </a>
     <div class="left-side">

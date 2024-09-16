@@ -71,8 +71,11 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((response) => response.json())
         .then((data) => {
           if (data.status === "success") {
+            console.log(data.data)
+            if (data.data.length === 0) {
+              alert("No hay reportes de hurto para este rango de fechas.")
+            }
             loadMarkers(data.data);
-            console.log(data.data);
           } else {
             console.error("Error:", data.message);
           }
