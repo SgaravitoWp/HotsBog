@@ -1,17 +1,26 @@
+// Variables para almacenar la latitud y longitud seleccionadas.
 var lat = "";
 var lng = "";
 var isPositionFilled = false;
 
+/**
+ * Verifica las condiciones para habilitar o deshabilitar el botón de envío.
+ * Las condiciones incluyen la fecha ingresada, casillas de verificación seleccionadas y una posición en el mapa.
+ */
 function checkAllConditions() {
   const submitButton = document.getElementById("submitAll");
-  const dateInput = document.getElementById("date-input");
+  const dateInput = document.getElementById("date-input").value.trim();
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const todayDate = new Date();
 
-  const isDateFilled = dateInput.value.trim() !== "";
+  // Verifica si la fecha ingresada es válida y no está en el futuro.
+  const isDateFilled = dateInput && new Date(dateInput) <= todayDate;
+  // Verifica si al menos una casilla de verificación está marcada.
   const isAnyCheckboxChecked = Array.from(checkboxes).some(
     (checkbox) => checkbox.checked
   );
 
+  // Habilita o deshabilita el botón de envío según las condiciones verificadas.
   submitButton.disabled = !(
     isDateFilled &&
     isAnyCheckboxChecked &&
@@ -25,12 +34,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const dateInput = document.getElementById("date-input");
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
+  // Agrega eventos para verificar condiciones cuando la entrada de fecha o las casillas cambian.
   dateInput.addEventListener("input", checkAllConditions);
   checkboxes.forEach((checkbox) =>
     checkbox.addEventListener("change", checkAllConditions)
   );
 
   checkAllConditions();
+
+  // Maneja el evento de clic en el botón de envío.
   document
     .getElementById("submitAll")
     .addEventListener("click", function (event) {
@@ -53,6 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
         longitude: lng,
       };
 
+      // Envia los datos al servidor.
       fetch("/report-theft", {
         method: "POST",
         headers: {
@@ -64,18 +77,23 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           if (data.status === "success") {
             window.location.href = "/home";
-            alert("Su reporte fue realizado con exito. ");
+            alert("Su reporte fue realizado con éxito.");
           } else {
             console.error("Error:", data.message);
           }
         })
         .catch((error) => {
-          alert("Intente de nuevo. Ocurrio un error. ");
+          alert("Intente de nuevo. Ocurrió un error.");
           console.error("Error en el envío:", error);
         });
     });
 });
 
+/**
+ * Actualiza las coordenadas de la posición seleccionada en el mapa.
+ *
+ * @param {google.maps.LatLng} position - La posición seleccionada en el mapa.
+ */
 function updateCoordinates(position) {
   lat = position.lat();
   lng = position.lng();
@@ -83,6 +101,9 @@ function updateCoordinates(position) {
   checkAllConditions();
 }
 
+/**
+ * Inicializa el mapa de Google Maps y maneja la selección de posición en el mapa.
+ */
 function initMap() {
   const initialPosition = { lat: 4.6533816, lng: -74.0836333 };
 
@@ -102,9 +123,11 @@ function initMap() {
 
   let marker = null;
 
+  // Maneja el evento de clic en el mapa para seleccionar una posición.
   map.addListener("click", function (event) {
     const clickedLocation = event.latLng;
 
+    // Actualiza la posición del marcador existente o crea uno nuevo.
     if (marker) {
       marker.setPosition(clickedLocation);
     } else {

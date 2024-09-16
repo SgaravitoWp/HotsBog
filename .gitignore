@@ -7,3 +7,6 @@ __pycache__/
 # Ignorar archivos de configuración del editor
 *.idea/
 *.vscode/
+
+#Ignorar variables de entorno. 
+.env

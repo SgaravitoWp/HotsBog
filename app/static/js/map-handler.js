@@ -1,18 +1,25 @@
+// Variable para almacenar la instancias correspondientes al mapa de Google Maps.
 let map;
 let markers = [];
 
+/**
+ * Verifica las condiciones para habilitar o deshabilitar el botón de envío.
+ * Las condiciones incluyen fechas válidas y al menos una casilla de verificación seleccionada.
+ */
 function checkAllConditions() {
   const submitButton = document.getElementById("submitAll");
-  const startDate = document.getElementById("startDate");
-  const endDate = document.getElementById("endDate");
+  const startDate = document.getElementById("startDate").value.trim();
+  const endDate = document.getElementById("endDate").value.trim();
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const todayDate = new Date();
   let isValidDate = false;
 
-  if (startDate.value.trim() !== "" && endDate.value.trim() !== "") {
-    const startDateValue = new Date(startDate.value.trim());
-    const endDateValue = new Date(endDate.value.trim());
-    isValidDate = startDateValue <= endDateValue;
-  }
+  isValidDate =
+    startDate &&
+    endDate &&
+    new Date(startDate) <= new Date(endDate) &&
+    new Date(startDate) <= todayDate &&
+    new Date(endDate) <= todayDate;
 
   const isAnyCheckboxChecked = Array.from(checkboxes).some(
     (checkbox) => checkbox.checked
@@ -20,7 +27,6 @@ function checkAllConditions() {
 
   submitButton.disabled = !(isValidDate && isAnyCheckboxChecked);
   submitButton.style.opacity = submitButton.disabled ? "0.5" : "1";
-  
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -34,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
     checkbox.addEventListener("change", checkAllConditions)
   );
   checkAllConditions();
+
   document
     .getElementById("submitAll")
     .addEventListener("click", function (event) {
@@ -54,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
         thefts: selectedValues,
       };
 
-      fetch("/load-reports", {
+      fetch("/fetch-reports", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,17 +72,21 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           if (data.status === "success") {
             loadMarkers(data.data);
+            console.log(data.data);
           } else {
             console.error("Error:", data.message);
           }
         })
         .catch((error) => {
-          alert("Intente de nuevo. Ocurrio un error. ");
+          alert("Intente de nuevo. Ocurrió un error.");
           console.error("Error en el envío:", error);
         });
     });
 });
 
+/**
+ * Inicializa el mapa de Google Maps con una posición inicial y restricciones de área.
+ */
 function initMap() {
   const initialPosition = { lat: 4.6533816, lng: -74.0836333 };
 
@@ -94,30 +105,66 @@ function initMap() {
   });
 }
 
+/**
+ * Elimina todos los marcadores del mapa y limpia la lista de marcadores.
+ */
 function clearMarkers() {
-  for (let i = 0; i < markers.length; i++) {
-    markers[i].setMap(null);
-  }
+  markers.forEach((marker) => marker.setMap(null));
   markers = [];
 }
 
+/**
+ * Carga los marcadores en el mapa basados en los datos proporcionados.
+ *
+ * @param {Array} data - Lista de datos que contienen información para cada marcador (latitud, longitud, fecha, robos).
+ */
 function loadMarkers(data) {
   clearMarkers();
+  let image = "/static/images/hotsbog-favicon.png";
   data.forEach((place) => {
     const marker = new google.maps.Marker({
       position: { lat: parseFloat(place.lat), lng: parseFloat(place.lng) },
       map: map,
+      icon: {
+        url: image,
+        scaledSize: new google.maps.Size(50, 50),
+      },
       title: place.name,
       optimized: false,
-      clickable: false,
+      clickable: true,
       draggable: false,
     });
     markers.push(marker);
-    // const label = new google.maps.InfoWindow({
-    //     content: `<div style="font-weight: bold;">${place.name}</div>`,
-    //     position: {lat: place.lat, lng: place.lng},
-    //     disableAutoPan: true
-    // });
-    // label.open(map);
+
+    const listThefts = place.thefts
+      .map((theft) => `<li>${theft}</li>`)
+      .join("");
+    let content = `
+    <div class="artificial-body">
+      <div class="info-container">
+        <div class="info-items">
+          <span class="info-span"> ${place.date} </span>
+        </div>
+        <div class="info-items info-horizontal-line"></div>
+        <div class="info-items">
+          <ul>
+            ${listThefts}
+          </ul>
+        </div>
+      </div>
+    </div>
+    `;
+
+    const infoWindow = new google.maps.InfoWindow({
+      content: content,
+    });
+
+    marker.addListener("click", () => {
+      console.log("click punto");
+      infoWindow.open({
+        anchor: marker,
+        map,
+      });
+    });
   });
 }

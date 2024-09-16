@@ -21,7 +21,12 @@
 
     <title>Page Unauthorized</title>
   </head>
-  <body onload="writeCode('401')">
+  <body
+    onload="writeTagText('401',
+    1500,
+    'code'
+  )"
+  >
     <script src="{{ url_for('static', filename='js/home.js') }}"></script>
     <div class="container">
       <div class="row">

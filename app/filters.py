@@ -1,39 +1,50 @@
-import pandas as pd
 from datetime import datetime
+import pandas as pd
+import locale
 
-def common_values(thefts, thefts_filter):
+# Establece la configuración regional para fechas en español
+locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 
-    thefts = thefts.split(",") 
-
-    return bool(set(thefts) & set(thefts_filter))
+def set_common_values(thefts, thefts_filter):
+    """
+    Verifica si hay valores comunes entre dos listas de hurtos.
     
+    Args:
+        thefts (list): Lista de hurtos.
+        thefts_filter (list): Lista de hurtos a filtrar.
+
+    Returns:
+        bool: `True` si hay elementos comunes, `False` en caso contrario.
+    """
+    return bool(set(thefts) & set(thefts_filter))
 
 def filter_data(data, filters):
+    """
+    Filtra los datos según las fechas y los hurtos especificados en los filtros.
 
+    Args:
+        data (list of dicts): Datos a filtrar, donde cada dict representa una fila con una fecha y hurtos.
+        filters (dict): Filtros que incluyen `startDate`, `endDate` y `thefts`. `startDate` y `endDate` deben estar en formato '%Y-%m-%d'.
+
+    Returns:
+        list of dicts: Datos filtrados, con fechas formateadas en 'día de mes de año'.
+    """
+    # Convierte los datos en un DataFrame
     df = pd.DataFrame(data)
 
+    # Convierte las fechas en filtros a objetos datetime
     filters["startDate"] = datetime.strptime(filters["startDate"], "%Y-%m-%d")
     filters["endDate"] = datetime.strptime(filters["endDate"], "%Y-%m-%d")
     df["date"] = pd.to_datetime(df["date"])
 
-    date_df = df[(df['date'] >= filters["startDate"]) & ( df['date'] <= filters["endDate"])]
-    final_df = date_df[date_df.apply(lambda row: common_values(row["thefts"], filters["thefts"]), axis=1)]
+    # Filtra el DataFrame por el rango de fechas
+    date_df = df[(df['date'] >= filters["startDate"]) & (df['date'] <= filters["endDate"])]
 
+    # Filtra el DataFrame por los hurtos especificados
+    final_df = date_df[date_df.apply(lambda row: set_common_values(row["thefts"], filters["thefts"]), axis=1)]
+
+    # Formatea las fechas
+    final_df.loc[:, "date"] = final_df["date"].apply(lambda date: date.strftime('%d de %B de %Y'))
+    
+    # Devuelve el DataFrame como una lista de diccionarios
     return final_df.to_dict(orient="records")
-
-
-# data = [
-#     {"date": "2024-09-15", "thefts": "Dispositivo Electronico,Bien Monetario,Vehiculo"},
-#     {"date": "2024-09-15", "thefts": "Vehiculo,Otros"},
-#     {"date": "2024-09-15", "thefts": "Dispositivo Electronico,Bien Monetario,Vehiculo,Otros"},
-#     {"date": "2024-09-15", "thefts": "Dispositivo Electronico"},
-# ]
-
-    
-# filters = {
-#     "startDate": "2024-09-12",
-#     "endDate": "2024-09-23",
-#     "thefts": ["Vehiculo"]
-# }
-    
-# print(filter_data(data, filters))

@@ -143,7 +143,7 @@ p {
   text-align: justify;
 }
 
-span {
+.highlight {
   color: #f8a833;
   animation: hot-entry1 2s ease-in;
 }
@@ -199,19 +199,6 @@ form {
   padding: 10px;
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
   width: 100%;
-}
-
-.checklist-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.checklist-item {
-  margin-bottom: 1%;
-}
-
-input[type="checkbox"] {
-  margin-right: 1%;
 }
 
 input[type="date"] {

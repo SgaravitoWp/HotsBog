@@ -25,13 +25,23 @@
     />
     <title>Hot'sBog</title>
   </head>
-  <body onload="writeDescription();writeName()">
+  <body
+    onload="writeTagText('Una alternativa para combatir la inseguridad en Bogotá',
+    50, 
+    'subtitle'
+  );
+  writeTagText('by: Samuel Garavito',
+    120, 
+    'author'
+  )
+  "
+  >
     <script src="{{ url_for('static', filename='js/home.js') }}"></script>
     <div class="box-aux-1"></div>
     <div class="content">
       <div class="navbar">
-        <a id="home" onclick="muestra_oculta('home')">Home</a>
-        <a id="more" onclick="muestra_oculta('more')">Acerca de</a>
+        <a id="home" onclick="switchTabs('home')">Home</a>
+        <a id="more" onclick="switchTabs('more')">Acerca de</a>
         <div style="width: 10%"></div>
         <a id="auth" href="{{ url_for('login') }}">
           <i class="fa-brands fa-google"></i>
